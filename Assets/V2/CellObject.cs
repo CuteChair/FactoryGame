@@ -5,4 +5,7 @@ using UnityEngine;
 public class CellObject : MonoBehaviour
 {
     public int ID;
+    public CellCoordinates CoordinateLoc;
+    public float Height;
+    public float Width;
 }
