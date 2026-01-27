@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class NewGridManager : MonoBehaviour
 {
+    public static event Action<int, NewCells> OnNewCellCreated;
+
+
     public int Height;
     public int Width;
 
@@ -52,6 +55,8 @@ public class NewGridManager : MonoBehaviour
         CellObject newCellComponent = newCell.gameObject.AddComponent<CellObject>();
 
         newCellComponent.CellInfo = new NewCells(id, atRow, AtCol);
+
+        OnNewCellCreated?.Invoke(id, newCellComponent.CellInfo);
     }
 
 }
