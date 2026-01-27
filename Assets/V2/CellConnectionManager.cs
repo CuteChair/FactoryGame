@@ -4,38 +4,58 @@ using UnityEngine;
 
 public class CellConnectionManager : MonoBehaviour
 {
-    public static CellConnectionManager Instance;
-
-    private Dictionary<int, NewCells> cells = new Dictionary<int, NewCells>();
-
-    private void Awake()
-    {
-        Instance = this;
-    }
+    private Dictionary<int, CellObject> cells = new Dictionary<int, CellObject>();
+    private List<CellObject> cellObjects = new List<CellObject>();
 
     private void OnEnable()
     {
         NewGridManager.OnNewCellCreated += AddNewCell;
+        NewGridManager.OnWholeGridGenerated += CreateCellConnections;
     }
 
     private void OnDisable()
     {
-        NewGridManager.OnNewCellCreated -= AddNewCell;
-    }
-    public NewCells RequestForCellInfo(int id)
-    {
-        if (cells.ContainsKey(id))
-        {
-            return cells[id];
-        }
-        else
-
-            return null;
+        NewGridManager.OnNewCellCreated += AddNewCell;
+        NewGridManager.OnWholeGridGenerated -= CreateCellConnections;
     }
 
-    private void AddNewCell(int id, NewCells newCell)
+    private void AddNewCell(int id, CellObject newCell)
     {
         cells.Add(id, newCell);
     }
 
+    private void CreateCellConnections(int row, int column)
+    {
+        List<NewCells> newCells = new List<NewCells>();
+
+
+       for (int i = 0; i < cells.Count; i++)
+        {
+            //if (cells.ContainsKey(cells[i].CellInfo.ID - 1) && cells[i].CellInfo.CoordinateLoc.Column != 0)
+            if (cells.ContainsKey(cells[i].CellInfo.ID - 1))
+            {
+                newCells.Add(cells[i - 1].CellInfo);
+            }
+
+            //if (cells.ContainsKey(cells[i].CellInfo.ID + 1) && cells[i].CellInfo.CoordinateLoc.Column != column - 1)
+            if (cells.ContainsKey(cells[i].CellInfo.ID + 1) && cells[i].CellInfo.CoordinateLoc.Column != column)
+            {
+                newCells.Add(cells[i + 1].CellInfo);
+            }
+
+            if (cells.ContainsKey(cells[i].CellInfo.ID + column))
+            {
+                newCells.Add(cells[i + column].CellInfo);
+            }
+
+            if (cells.ContainsKey(cells[i].CellInfo.ID - column))
+            {
+                newCells.Add(cells[i - column].CellInfo);
+            }
+
+            cells[i].CellConnection = newCells;
+
+            newCells = new List<NewCells>();
+        }
+    }
 }

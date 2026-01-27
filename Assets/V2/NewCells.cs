@@ -8,6 +8,8 @@ public class NewCells
 {
     public int ID;
     public CellCoordinates CoordinateLoc;
+
+    //public List<NewCells> connections = new List<NewCells>();
     public NewCells(int id, int atRow, int atCol)
     {
         CoordinateLoc = new CellCoordinates();

@@ -1,12 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NewGridManager : MonoBehaviour
 {
-    public static event Action<int, NewCells> OnNewCellCreated;
-
+    public static event Action<int, CellObject> OnNewCellCreated;
+    public static event Action<int, int> OnWholeGridGenerated;
 
     public int Height;
     public int Width;
@@ -35,12 +34,15 @@ public class NewGridManager : MonoBehaviour
                 i = 0;
 
                 if (rowCount == Rows)
+                {
+                    OnWholeGridGenerated?.Invoke(Rows, Columns);
                     return;
+                }
             }
 
             PosInGrid.Add(currentLoc);
 
-            CreateNewCell(currentLoc, id, rowCount, i);
+            CreateNewCell(currentLoc, id, rowCount + 1, i + 1);
 
             currentLoc.x += Width;
 
@@ -56,7 +58,7 @@ public class NewGridManager : MonoBehaviour
 
         newCellComponent.CellInfo = new NewCells(id, atRow, AtCol);
 
-        OnNewCellCreated?.Invoke(id, newCellComponent.CellInfo);
+        OnNewCellCreated?.Invoke(id , newCellComponent);
     }
 
 }
