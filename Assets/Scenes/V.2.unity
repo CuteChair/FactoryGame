@@ -260,8 +260,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Height: 1
   Width: 1
-  Rows: 5
-  Columns: 5
+  Rows: 100
+  Columns: 100
   CellsPrefab: {fileID: 2663324695607311101, guid: 3a0d66c81c0feb1419c4ad99ec24850d, type: 3}
   currentLoc: {x: 0, y: 0}
   PosInGrid: []
